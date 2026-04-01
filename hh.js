@@ -99,7 +99,6 @@ randomWord();
 generateButtons();
 guessedWord();
 
-// --- Time API Logic ---
 async function fetchTime() {
   const timeDisplay = document.getElementById('timeDisplay');
   if (!timeDisplay) return;
@@ -112,12 +111,9 @@ async function fetchTime() {
 
     const data = await response.json();
 
-    // API Ninjas returns datetime in "YYYY-MM-DD HH:MM:SS" format. 
-    // We convert it to ISO format for safe Date parsing.
     const isoString = data.datetime.replace(' ', 'T') + 'Z';
     const datetime = new Date(isoString);
 
-    // Format the time as a readable string
     timeDisplay.innerText = `Current Time (UTC): ${datetime.toLocaleTimeString('en-US', { timeZone: 'UTC' })}`;
     timeDisplay.classList.remove('text-muted');
     timeDisplay.classList.add('text-success');
@@ -129,6 +125,6 @@ async function fetchTime() {
   }
 }
 
-// Fetch immediately, then update every 10 seconds
+
 fetchTime();
 setInterval(fetchTime, 10000);
