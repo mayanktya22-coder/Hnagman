@@ -1,18 +1,18 @@
 var programming_languages = [
-	"python",
-	"javascript",
-	"mongodb",
-	"json",
-	"java",
-	"html",
-	"css",
-	"c",
-	"csharp",
-	"golang",
-	"kotlin",
-	"php",
-	"sql",
-	"ruby"
+  "python",
+  "javascript",
+  "mongodb",
+  "json",
+  "java",
+  "html",
+  "css",
+  "c",
+  "csharp",
+  "golang",
+  "kotlin",
+  "php",
+  "sql",
+  "ruby"
 ]
 
 let answer = '';
@@ -98,3 +98,37 @@ document.getElementById('maxWrong').innerHTML = maxWrong;
 randomWord();
 generateButtons();
 guessedWord();
+
+// --- Time API Logic ---
+async function fetchTime() {
+  const timeDisplay = document.getElementById('timeDisplay');
+  if (!timeDisplay) return;
+
+  try {
+    const response = await fetch('https://api.api-ninjas.com/v1/worldtime?timezone=UTC', {
+      headers: { 'X-Api-Key': '0Ci5j8nunzmQezwK2AsYcdSplE12TJJtx0NniBFh' }
+    });
+    if (!response.ok) throw new Error('Failed to fetch time');
+
+    const data = await response.json();
+
+    // API Ninjas returns datetime in "YYYY-MM-DD HH:MM:SS" format. 
+    // We convert it to ISO format for safe Date parsing.
+    const isoString = data.datetime.replace(' ', 'T') + 'Z';
+    const datetime = new Date(isoString);
+
+    // Format the time as a readable string
+    timeDisplay.innerText = `Current Time (UTC): ${datetime.toLocaleTimeString('en-US', { timeZone: 'UTC' })}`;
+    timeDisplay.classList.remove('text-muted');
+    timeDisplay.classList.add('text-success');
+  } catch (error) {
+    console.error('Error fetching time:', error);
+    timeDisplay.innerText = 'Could not fetch time.';
+    timeDisplay.classList.remove('text-muted');
+    timeDisplay.classList.add('text-danger');
+  }
+}
+
+// Fetch immediately, then update every 10 seconds
+fetchTime();
+setInterval(fetchTime, 10000);
