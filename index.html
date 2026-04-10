@@ -1,30 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
-  <title>Hangman</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hangman – Guess the Language</title>
+  <meta name="description" content="A beautifully interactive Hangman game. Guess programming languages letter by letter before the man is hanged!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="container">
-  <h1 class="text-center">Hangman</h1>
-  <div id="timeDisplay" class="text-center text-muted mb-3" style="font-size: 1.1rem; font-weight: 500; min-height: 24px;">
-    Fetching time...
-  </div>
-  <div class="float-right">Wrong Guesses: <span id='mistakes'>0</span> of <span id='maxWrong'></span></div>
-  <div class="text-center">
-    <img id='hangmanPic' src="./images/0.jpg" alt="">
-    <p>Guess the Programming Language:</p>
-    <p id="wordSpotlight">The word to be guessed goes here</p>
-    <div id="keyboard"></div>
-    <button class="btn btn-info" onClick="reset()">Reset</button>
-  </div> 
-</div>
 
-<script src='hh.js'></script>
+  <div class="particles" id="particles"></div>
+
+  <header class="site-header">
+    <div class="header-logo">💀 <span>Hangman</span></div>
+    <div class="header-meta">
+      <div class="time-badge" id="timeDisplay">⏱ --:--:-- UTC</div>
+    </div>
+  </header>
+
+  <main class="game-wrapper">
+
+    <section class="drawing-panel" aria-label="Hangman figure">
+      <div class="svg-container">
+        <img id="hangmanPic" src="./images/0.svg" alt="Hangman drawing" />
+      </div>
+
+      <div class="lives-section">
+        <div class="lives-label">
+          <span>Lives</span>
+          <span id="livesText">6 / 6</span>
+        </div>
+        <div class="lives-bar-track">
+          <div class="lives-bar-fill" id="livesBar"></div>
+        </div>
+        <div class="hearts-row" id="heartsRow"></div>
+      </div>
+    </section>
+
+    <section class="word-panel">
+      <div class="hint-badge">🖥 Guess the Programming Language</div>
+
+      <div class="word-display" id="wordSpotlight" aria-live="polite" aria-label="Current word status"></div>
+
+      <p class="category-label" id="categoryHint"></p>
+
+      <div class="keyboard" id="keyboard" role="group" aria-label="Letter selection keyboard"></div>
+
+      <div class="action-row">
+        <button class="btn-reset" id="resetBtn" onclick="reset()">
+          <span class="btn-icon">🔄</span> New Game
+        </button>
+        <button class="btn-hint" id="hintBtn" onclick="useHint()">
+          <span class="btn-icon">💡</span> Hint
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="modal-overlay" id="winModal" role="dialog" aria-modal="true" aria-label="You won!">
+    <div class="modal-card modal-win">
+      <div class="modal-emoji" id="winEmoji">🎉</div>
+      <h2 class="modal-title">You Won!</h2>
+      <p class="modal-sub">The word was <strong id="winWord"></strong></p>
+      <div class="modal-stats">
+        <div class="stat"><span id="statMistakes">0</span><label>Mistakes</label></div>
+        <div class="stat"><span id="statGuesses">0</span><label>Guesses</label></div>
+      </div>
+      <button class="btn-reset" onclick="reset()">Play Again 🚀</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="loseModal" role="dialog" aria-modal="true" aria-label="You lost!">
+    <div class="modal-card modal-lose">
+      <div class="modal-emoji">💀</div>
+      <h2 class="modal-title">Game Over</h2>
+      <p class="modal-sub">The word was <strong id="loseWord"></strong></p>
+      <button class="btn-reset" onclick="reset()">Try Again 💪</button>
+    </div>
+  </div>
+
+  <script src="hh.js"></script>
 </body>
 </html>
